@@ -247,6 +247,28 @@ async function getBrowser(
       return { browser, context, env: "LOCAL" };
     }
 
+    if (localBrowserLaunchOptions?.wsEndpoint) {
+      if (!localBrowserLaunchOptions.wsEndpoint.includes("connect.connect")) {
+        logger({
+          category: "init",
+          message: "connecting to local browser via CDP URL",
+          level: 1,
+          auxiliary: {
+            wsEndpoint: {
+              value: localBrowserLaunchOptions.wsEndpoint,
+              type: "string",
+            },
+          },
+        });
+      }
+
+      const browser = await chromium.connect(
+        localBrowserLaunchOptions.wsEndpoint,
+      );
+      const context = browser.contexts()[0];
+      return { browser, context, env: "LOCAL" };
+    }
+
     let userDataDir = localBrowserLaunchOptions?.userDataDir;
     if (!userDataDir) {
       const tmpDirPath = path.join(os.tmpdir(), "stagehand");

@@ -190,6 +190,7 @@ export interface LocalBrowserLaunchOptions {
   bypassCSP?: boolean;
   cookies?: Cookie[];
   cdpUrl?: string;
+  wsEndpoint?: string;
 }
 
 export interface StagehandMetrics {
