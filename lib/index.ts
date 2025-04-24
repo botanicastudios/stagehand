@@ -265,6 +265,10 @@ async function getBrowser(
       const browser = await chromium.connect(
         localBrowserLaunchOptions.wsEndpoint,
       );
+      if (browser.contexts().length === 0) {
+        const newBrowserContext = await browser.newContext();
+        await newBrowserContext.newPage();
+      }
       const context = browser.contexts()[0];
       return { browser, context, env: "LOCAL" };
     }
